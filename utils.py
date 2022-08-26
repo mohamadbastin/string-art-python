@@ -30,7 +30,7 @@ class Utils:
 
             img_cropped = img.crop((dif1, 0, dif1 + h, h))
 
-        img_cropped.save(f"result/r_{sample_name}.png")
+        img_cropped.save(f"result/original_{sample_name}.png")
 
         size = (w, h)
         mask = Image.new('L', size, 0)
@@ -42,7 +42,30 @@ class Utils:
         final_img_arr = np.dstack((img_arr, mask_arr))
 
         result = Image.fromarray(final_img_arr)
-        result.resize((1000, 1000)).save(f"result/r_{sample_name}.png")
+        result.resize((1000, 1000)).save(f"result/original_{sample_name}.png")
 
-        rgb_img = Image.open(f"result/r_{sample_name}.png").convert('L')
-        rgb_img.save(f"result/r_{sample_name}.png")
+        rgb_img = Image.open(f"result/original_{sample_name}.png").convert('L')
+        rgb_img.save(f"result/original_{sample_name}.png")
+
+    @staticmethod
+    def get_pins(pins_count):
+        pins = []
+        degree = -math.radians(360 / pins_count)
+
+        for i in range(pins_count):
+            pin = [
+                500 - (round(math.sin(degree * i) * 500)),
+                500 - (round(math.cos(degree * i) * 500))
+            ]
+            pins.append(pin)
+
+        # img = Image.open(f"result/original_{sample_name}.png").convert("RGB")
+        # img_matrix = np.asarray(img)
+
+        # for i in pins:
+        #     img_matrix[min(i[0], 999)][min(i[1], 999)] = [255, 0, 0]
+
+        # tst = Image.fromarray(img_matrix)
+
+        # tst.save(f"result/tmp_{sample_name}.png")
+        return pins
