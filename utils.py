@@ -54,8 +54,8 @@ class Utils:
 
         for i in range(pins_count):
             pin = [
-                500 - (round(math.sin(degree * i) * 500)),
-                500 - (round(math.cos(degree * i) * 500))
+                min(999, 500 - (round(math.sin(degree * i) * 500))),
+                min(999, 500 - (round(math.cos(degree * i) * 500)))
             ]
             pins.append(pin)
 
@@ -69,3 +69,28 @@ class Utils:
 
         # tst.save(f"result/tmp_{sample_name}.png")
         return pins
+
+    @staticmethod
+    def create_board(pins):
+        mask = Image.new('RGBA', (1000, 1000), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(mask)
+        draw.pieslice(((0, 0), (1000, 1000)),
+                      0,
+                      360,
+                      fill=(255, 255, 255),
+                      outline="white")
+
+        mask_matrix = np.asarray(mask)
+        # print(mask_matrix[0][0])
+        for i in pins:
+            mask_matrix[i[0]][i[1]] = [255, 0, 0, 1]
+
+        tmp = Image.fromarray(mask_matrix)
+
+        tmp.save("result/board.png")
+
+        return tmp
+
+    @staticmethod
+    def draw_line(draw, pin1, pin2):
+        draw.line((pin1[0], pin1[1], pin2[0], pin2[1]), fill=0)
