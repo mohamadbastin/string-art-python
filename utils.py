@@ -94,3 +94,7 @@ class Utils:
     @staticmethod
     def draw_line(draw, pin1, pin2):
         draw.line((pin1[0], pin1[1], pin2[0], pin2[1]), fill=0)
+
+    @staticmethod
+    def save_board(board):
+        board.save("result/board.png")

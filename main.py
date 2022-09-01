@@ -1,3 +1,4 @@
+from random import random
 from utils import *
 import math
 
@@ -6,7 +7,7 @@ number_of_lines = 3000
 
 Utils.make_cropped_grayscale_image(sample_name)
 
-pins_count = 4
+pins_count = 20
 
 pins = Utils.get_pins(pins_count)
 
@@ -34,7 +35,7 @@ def is_allowed(prev, nxt):
 
 
 def compute_cost(pins_order, previous_pin, next_pin):
-    pass
+    return random()
 
 
 for i in range(number_of_lines):
@@ -53,5 +54,11 @@ for i in range(number_of_lines):
         break
 
     pins_order.append(best_next_pin)
+
+# print(pins_order)
+for i in range(len(pins_order) - 1):
+    Utils.draw_line(draw, pins_order[i], pins_order[i + 1])
+
+Utils.save_board(board)
 
 print("done")
