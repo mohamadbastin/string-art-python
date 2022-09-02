@@ -1,10 +1,14 @@
 import math
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageOps
+from PIL import Image, ImageDraw, ImageOps, ImageFilter
 
 
 class Utils:
+    @staticmethod
+    def gaussian_blur(img):
+        return img.filter(ImageFilter.GaussianBlur(radius=15))
+
     @staticmethod
     def make_cropped_grayscale_image(sample_name: str):
         img = Image.open(f"assets/{sample_name}.jpg")
@@ -45,7 +49,10 @@ class Utils:
         result.resize((1000, 1000)).save(f"result/original_{sample_name}.png")
 
         rgb_img = Image.open(f"result/original_{sample_name}.png").convert('L')
-        rgb_img.save(f"result/original_{sample_name}.png")
+        rgb_img.save(f"result/r_{sample_name}.png")
+
+        blured = Utils.gaussian_blur(rgb_img)
+        blured.save(f"result/r_b_{sample_name}.png")
 
     @staticmethod
     def get_pins(pins_count):
@@ -59,15 +66,6 @@ class Utils:
             ]
             pins.append(pin)
 
-        # img = Image.open(f"result/original_{sample_name}.png").convert("RGB")
-        # img_matrix = np.asarray(img)
-
-        # for i in pins:
-        #     img_matrix[min(i[0], 999)][min(i[1], 999)] = [255, 0, 0]
-
-        # tst = Image.fromarray(img_matrix)
-
-        # tst.save(f"result/tmp_{sample_name}.png")
         return pins
 
     @staticmethod
@@ -81,7 +79,7 @@ class Utils:
                       outline="white")
 
         mask_matrix = np.asarray(mask)
-        # print(mask_matrix[0][0])
+
         for i in pins:
             mask_matrix[i[0]][i[1]] = [255, 0, 0, 1]
 
