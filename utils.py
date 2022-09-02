@@ -6,8 +6,8 @@ from PIL import Image, ImageDraw, ImageOps, ImageFilter
 
 class Utils:
     @staticmethod
-    def gaussian_blur(img):
-        return img.filter(ImageFilter.GaussianBlur(radius=15))
+    def _gaussian_blur(img):
+        return img.filter(ImageFilter.GaussianBlur(radius=10))
 
     @staticmethod
     def make_cropped_grayscale_image(sample_name: str):
@@ -51,7 +51,7 @@ class Utils:
         rgb_img = Image.open(f"result/original_{sample_name}.png").convert('L')
         rgb_img.save(f"result/r_{sample_name}.png")
 
-        blured = Utils.gaussian_blur(rgb_img)
+        blured = Utils._gaussian_blur(rgb_img)
         blured.save(f"result/r_b_{sample_name}.png")
 
     @staticmethod
@@ -96,3 +96,13 @@ class Utils:
     @staticmethod
     def save_board(board):
         board.save("result/board.png")
+
+    @staticmethod
+    def get_blured_new_board(board, pins_order):
+        draw = ImageDraw.Draw(board)
+        for i in range(len(pins_order) - 1):
+            Utils.draw_line(draw, pins_order[i], pins_order[i + 1])
+
+        blured_board = Utils._gaussian_blur(board)
+        blured_board_array = np.array(blured_board)
+        return blured_board_array
