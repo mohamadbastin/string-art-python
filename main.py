@@ -50,7 +50,8 @@ def compute_cost(pins_order, next_pin):
             # print(int(blured_board_array[h][w][0]))
             # print(int(blured_original_array[h][w]))
             diff = (int(blured_board_array[h][w][0]) -
-                    int(blured_original_array[h][w]))**2
+                    int(blured_original_array[h][w]))**2  #TODO scale to 0-1
+
             s += diff
 
     return s / 1e6
